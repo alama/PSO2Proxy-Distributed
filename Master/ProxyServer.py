@@ -2,7 +2,8 @@ __author__ = 'Sean'
 
 ProxyServers = {}
 
-class ProxyServer:
+
+class ProxyServer(object):
     def __init__(self, address, name):
         self.address = address
         self.name = name

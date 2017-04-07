@@ -3,7 +3,7 @@ import json
 Commands = {}
 
 
-class CommandHandler():
+class CommandHandler(object):
     def __init__(self, command):
         self.command = command
 

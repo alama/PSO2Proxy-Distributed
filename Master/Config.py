@@ -29,7 +29,7 @@ class YAMLConfig(object):
     def _make_default_config(self):
         try:
             os.makedirs(os.path.dirname(self.filename))
-        except:
+        except Exception:
             pass
         f = open(self.filename, "w")
         yaml.dump(self.default_keys, f, indent=1)

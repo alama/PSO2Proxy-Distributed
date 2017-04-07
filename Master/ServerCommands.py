@@ -1,4 +1,5 @@
-from ProxyServer import ProxyServers, ProxyServer
+from ProxyServer import ProxyServer
+from ProxyServer import ProxyServers
 
 CommandHandlers = {}
 

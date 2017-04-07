@@ -1,18 +1,23 @@
 import json
 import os
-import struct
 import socket
+import struct
+
+from twisted.internet.endpoints import TCP4ServerEndpoint
+from twisted.internet import reactor
 from twisted.internet import stdio
 
-from twisted.internet import reactor
-from twisted.internet.endpoints import TCP4ServerEndpoint
 from twisted.protocols import basic
 
 from WebAPI import setup_web
 
-from PSO2Protocols import shipdata, ShipInfoFactory, BlockSenderFactory
 from Commands import Commands
-from ProxyRedis import p, r, redis_config
+from ProxyRedis import p
+from ProxyRedis import r
+from ProxyRedis import redis_config
+from PSO2Protocols import BlockSenderFactory
+from PSO2Protocols import shipdata
+from PSO2Protocols import ShipInfoFactory
 
 
 class ServerConsole(basic.LineReceiver):
@@ -52,7 +57,7 @@ try:
     size = struct.unpack_from("i", shipdata.getvalue())[0]
     shipdata.write(s.recv(size - 4))
 
-except:
+except Exception:
     print("[PSO2PD] I got an error :(")
 
 print("[PSO2PD] Cached ship query.")

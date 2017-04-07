@@ -1,8 +1,8 @@
-from twisted.internet import protocol
 from ProxyServer import ProxyServers
+from twisted.internet import protocol
 
-import struct
 import io
+import struct
 
 shipdata = io.BytesIO()
 

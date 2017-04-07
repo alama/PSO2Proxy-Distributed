@@ -1,12 +1,12 @@
 import calendar
-import datetime
-import traceback
-from twisted.internet import reactor
-from twisted.internet.endpoints import TCP4ServerEndpoint
-from twisted.web import server
-from twisted.web.resource import Resource
 from Config import YAMLConfig
+import datetime
 from ProxyServer import ProxyServers
+import traceback
+from twisted.internet.endpoints import TCP4ServerEndpoint
+from twisted.internet import reactor
+from twisted.web.resource import Resource
+from twisted.web import server
 
 import json
 import os
@@ -56,9 +56,9 @@ class WebAPI(Resource):
     def render_GET(request):
         playerCount = 0
         servers = []
-        for server in ProxyServers.values():
-            playerCount += server.users
-            servers.append({'name': server.name, 'players': server.users, 'ip': server.address, 'enabled': server.enabled})
+        for server_ in ProxyServers.values():
+            playerCount += server_.users
+            servers.append({'name': server_.name, 'players': server_.users, 'ip': server_.address, 'enabled': server_.enabled})
 
         current_data = {'playerCount': playerCount,
                         'upSince': upStart,
@@ -91,7 +91,7 @@ class WEBRcon(Resource):
                         return json.dumps({'success': True, 'output': "Command sent."})
                     else:
                         return json.dumps({'success': False, 'reason': "Command not found."})
-                except:
+                except Exception:
                     e = traceback.format_exc()
                     return json.dumps({'success': False, 'reason': "Error executing command\n%s" % e})
 
