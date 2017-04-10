@@ -4,7 +4,12 @@ import socket
 import struct
 
 from twisted.internet.endpoints import TCP4ServerEndpoint
-from twisted.internet import reactor
+try:
+    from twisted.internet import epollreactor
+    epollreactor.install()
+    from twisted.internet import reactor
+except ImportError:
+    from twisted.internet import reactor
 from twisted.internet import stdio
 
 from twisted.protocols import basic
