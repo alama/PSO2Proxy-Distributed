@@ -1,7 +1,5 @@
 import json
 import os
-import socket
-import struct
 
 from twisted.internet.endpoints import TCP4ServerEndpoint
 try:
@@ -21,7 +19,6 @@ from ProxyRedis import p
 from ProxyRedis import r
 from ProxyRedis import redis_config
 from PSO2Protocols import BlockSenderFactory
-from PSO2Protocols import shipdata
 from PSO2Protocols import ShipInfoFactory
 
 
@@ -54,16 +51,6 @@ rthread = p.run_in_thread(sleep_time=0.001)
 print("[Redis] Messaging thread running.")
 
 print("[PSO2PD] Getting ship statuses...")
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-try:
-    s.connect(("210.189.208.1", 12199))  # Un-hardcode this!
-    shipdata.write(s.recv(4))
-    size = struct.unpack_from("i", shipdata.getvalue())[0]
-    shipdata.write(s.recv(size - 4))
-
-except Exception:
-    print("[PSO2PD] I got an error :(")
 
 print("[PSO2PD] Cached ship query.")
 

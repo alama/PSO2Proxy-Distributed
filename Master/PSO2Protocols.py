@@ -1,10 +1,61 @@
 from ProxyServer import ProxyServers
 from twisted.internet import protocol
+from twisted.internet import threads
 
 import io
+import socket
 import struct
 
-shipdata = io.BytesIO()
+queryShipArr = [(12199, "210.189.208.1"),
+                (12299, "210.189.208.16"),
+                (12399, "210.189.208.31"),
+                (12499, "210.189.208.46"),
+                (12599, "210.189.208.61"),
+                (12699, "210.189.208.76"),
+                (12799, "210.189.208.91"),
+                (12899, "210.189.208.106"),
+                (12999, "210.189.208.121"),
+                (12099, "210.189.208.136")]
+curShipIndex = 0
+
+
+def scrape_ship_packet(ship_ip, ship_port):
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.settimeout(30)
+    try:
+        s.connect((ship_ip, ship_port))
+    except socket.error:
+        return None
+    except Exception:
+        return None
+    data = io.BytesIO()
+    try:
+        data.write(s.recv(4))
+    except socket.error:
+        return None
+    except Exception:
+        return None
+    actual_size = struct.unpack_from('i', data.getvalue(), 0x0)[0]
+    try:
+        data.write(s.recv(actual_size - 4))
+    except socket.error:
+        return None
+    except Exception:
+        return None
+    s.close()
+    data.flush()
+    data = bytearray(data.getvalue())
+    return str(data)
+
+
+def get_ship_query():
+    global curShipIndex, queryShipArr
+    ship_port, ship_address = queryShipArr[curShipIndex]
+    data = scrape_ship_packet(ship_address, ship_port)
+    curShipIndex += 1
+    if curShipIndex >= len(queryShipArr):
+        curShipIndex = 0
+    return data
 
 
 class ShipInfo(protocol.Protocol):
@@ -12,7 +63,12 @@ class ShipInfo(protocol.Protocol):
         pass
 
     def connectionMade(self):
-        self.transport.write(shipdata.getvalue())
+        d = threads.deferToThread(get_ship_query)
+        d.addCallback(self.send_ship_list)
+
+    def send_ship_list(self, data):
+        if data:
+            self.transport.write(data)
         self.transport.loseConnection()
 
 
