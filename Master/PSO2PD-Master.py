@@ -44,6 +44,7 @@ class ServerConsole(basic.LineReceiver):
             print("[PSO2PD] Command not found.")
         self.transport.write('>>> ')
 
+
 print("=== PSO2Proxy-Distributed master server starting...")
 
 rthread = p.run_in_thread(sleep_time=0.001)

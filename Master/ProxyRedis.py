@@ -18,6 +18,7 @@ def servercomm_handler(message):
     else:
         print(("[SERVERCOMM] Got unknown data on channel %s: %s" % (message['channel'], message['data'])))
 
+
 if redis_config['db_pass'] == '':
     r = redis.StrictRedis(host=redis_config['db_host'], port=redis_config['db_port'], db=redis_config['db_id'])
 else:
