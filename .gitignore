@@ -54,3 +54,7 @@ docs/_build/
 target/
 
 .idea/
+
+#Configs
+/Master/redis.cfg.yaml
+/Master/web.cfg.yaml
