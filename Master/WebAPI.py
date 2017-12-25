@@ -54,13 +54,13 @@ class WebAPI(Resource):
     # noinspection PyPep8Naming
     @staticmethod
     def render_GET(request):
-        playerCount = 0
+        playercount = 0
         servers = []
         for server_ in list(ProxyServers.values()):
-            playerCount += server_.users
+            playercount += server_.users
             servers.append({'name': server_.name, 'players': server_.users, 'ip': server_.address, 'enabled': server_.enabled})
 
-        current_data = {'playerCount': playerCount,
+        current_data = {'playerCount': playercount,
                         'upSince': upStart,
                         'peakPlayers': peakPlayers, 'servers': servers}
         request.setHeader("content-type", "application/json")

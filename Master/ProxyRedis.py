@@ -4,7 +4,14 @@ from ServerCommands import CommandHandlers
 
 from Config import YAMLConfig
 
-redis_config = YAMLConfig("redis.cfg.yaml", {'bindip': "0.0.0.0", 'db_host': "localhost", 'db_port': 6379, 'db_id': 0, 'db_pass': ''})
+redis_config = YAMLConfig("redis.cfg.yaml",
+                          {'bindip': "0.0.0.0",
+                           'db_host': "localhost",
+                           'db_port': 6379,
+                           'db_id': 0,
+                           'db_pass': ''
+                           }
+                          )
 
 
 def plugin_handler(message):
@@ -20,9 +27,13 @@ def servercomm_handler(message):
 
 
 if redis_config['db_pass'] == '':
-    r = redis.StrictRedis(host=redis_config['db_host'], port=redis_config['db_port'], db=redis_config['db_id'])
+    r = redis.StrictRedis(
+        host=redis_config['db_host'], port=redis_config['db_port'], db=redis_config['db_id']
+    )
 else:
-    r = redis.StrictRedis(host=redis_config['db_host'], port=redis_config['db_port'], db=redis_config['db_id'], password=redis_config['db_pass'])
+    r = redis.StrictRedis(
+        host=redis_config['db_host'], port=redis_config['db_port'], db=redis_config['db_id'], password=redis_config['db_pass']
+    )
 
 p = r.pubsub(ignore_subscribe_messages=True)
 
