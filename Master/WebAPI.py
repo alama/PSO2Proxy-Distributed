@@ -56,7 +56,7 @@ class WebAPI(Resource):
     def render_GET(request):
         playerCount = 0
         servers = []
-        for server_ in ProxyServers.values():
+        for server_ in list(ProxyServers.values()):
             playerCount += server_.users
             servers.append({'name': server_.name, 'players': server_.users, 'ip': server_.address, 'enabled': server_.enabled})
 

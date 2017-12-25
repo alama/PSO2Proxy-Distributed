@@ -92,7 +92,7 @@ class BlockSender(protocol.Protocol):
         if len(ProxyServers) < 1:
             self.transport.loseConnection()
             return
-        servers = sorted(ProxyServers.values(), key=get_users)
+        servers = sorted(list(ProxyServers.values()), key=get_users)
         server = None
         for pserver in servers:
             if pserver.enabled:
@@ -110,7 +110,7 @@ class BlockSender(protocol.Protocol):
         buf += struct.pack('H', self.transport.getHost().port)
         buf += struct.pack('34x')
 
-        print("[BlockSend] Sending client to server %s currently with %i users." % (server.name, server.users))
+        print(("[BlockSend] Sending client to server %s currently with %i users." % (server.name, server.users)))
         server.users += 1
         self.transport.write(str(buf))
         self.transport.loseConnection()

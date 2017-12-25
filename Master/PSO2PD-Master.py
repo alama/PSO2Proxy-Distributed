@@ -56,11 +56,11 @@ print("[PSO2PD] Cached ship query.")
 
 print("[PSO2PD] Starting reactors...")
 
-for x in xrange(0, 10):
+for x in range(0, 10):
     endpoint = TCP4ServerEndpoint(reactor, 12000 + (100 * x), interface=redis_config['bindip'])
     endpoint.listen(BlockSenderFactory())
 
-for x in xrange(0, 10):
+for x in range(0, 10):
     endpoint = TCP4ServerEndpoint(reactor, 12099 + (100 * x), interface=redis_config['bindip'])
     endpoint.listen(ShipInfoFactory())
 

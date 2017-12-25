@@ -8,7 +8,7 @@ redis_config = YAMLConfig("redis.cfg.yaml", {'bindip': "0.0.0.0", 'db_host': "lo
 
 
 def plugin_handler(message):
-    print("[PLUGINMSG] Got plugin message on channel %s: %s" % (message['channel'], message['data']))
+    print(("[PLUGINMSG] Got plugin message on channel %s: %s" % (message['channel'], message['data'])))
 
 
 def servercomm_handler(message):
@@ -16,7 +16,7 @@ def servercomm_handler(message):
     if 'command' in msgobj and msgobj['command'] in CommandHandlers:
         CommandHandlers[msgobj['command']](msgobj)
     else:
-        print("[SERVERCOMM] Got unknown data on channel %s: %s" % (message['channel'], message['data']))
+        print(("[SERVERCOMM] Got unknown data on channel %s: %s" % (message['channel'], message['data'])))
 
 if redis_config['db_pass'] == '':
     r = redis.StrictRedis(host=redis_config['db_host'], port=redis_config['db_port'], db=redis_config['db_id'])

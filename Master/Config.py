@@ -19,7 +19,7 @@ class YAMLConfig(object):
             self._config_values = yaml.load(f)
             f.close()
             self._validate_config()
-        print("[Config] Config %s loaded!" % self.filename)
+        print(("[Config] Config %s loaded!" % self.filename))
 
     def _save_config(self):
         f = open(self.filename, "w")
@@ -34,29 +34,29 @@ class YAMLConfig(object):
         f = open(self.filename, "w")
         yaml.dump(self.default_keys, f, indent=1)
         f.close()
-        print("[Config] Default config for %s created." % self.filename)
+        print(("[Config] Default config for %s created." % self.filename))
         self._load_config()
 
     def _validate_config(self):
-        for key, value in self.default_keys.iteritems():
+        for key, value in self.default_keys.items():
             if key not in self._config_values:
                 self._config_values[key] = value
-                print("[Config] Added new default %s for config %s" % (key, self.filename))
+                print(("[Config] Added new default %s for config %s" % (key, self.filename)))
         if self.strict_mode:
-            for key in self._config_values.keys():
+            for key in list(self._config_values.keys()):
                 if key not in self.default_keys:
                     del self._config_values[key]
-                    print("[Config] Deleted invlid key %s for config %s" % (key, self.filename))
+                    print(("[Config] Deleted invlid key %s for config %s" % (key, self.filename)))
                 else:
                     if self._config_values[key] is None:
                         self._config_values[key] = self.default_keys[key]
-                        print("[Config] Resetting invalid key type for %s in config %s." % (key, self.filename))
+                        print(("[Config] Resetting invalid key type for %s in config %s." % (key, self.filename)))
         self._save_config()
 
     def get_key(self, key):
         if key not in self._config_values:
             raise KeyError
-        if isinstance(self._config_values[key], unicode):
+        if isinstance(self._config_values[key], str):
             return self._config_values[key].encode('utf-8')
         else:
             return self._config_values[key]
