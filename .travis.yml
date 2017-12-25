@@ -15,4 +15,4 @@ cache:
   - apt
 
 script:
-  - cd Master && ./checkstyle.sh
+  - ./checkstyle.sh Master
