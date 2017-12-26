@@ -41,16 +41,42 @@ class YAMLConfig(object):
         for key, value in self.default_keys.items():
             if key not in self._config_values:
                 self._config_values[key] = value
-                print(("[Config] Added new default %s for config %s" % (key, self.filename)))
+                print(
+                    (
+                        "[Config] Added new default {} for config {}".format
+                        (
+                            key,
+                            self.filename
+                        )
+                    )
+                )
         if self.strict_mode:
             for key in list(self._config_values.keys()):
                 if key not in self.default_keys:
                     del self._config_values[key]
-                    print(("[Config] Deleted invlid key %s for config %s" % (key, self.filename)))
+                    print(
+                        (
+                            "[Config] Deleted invalud key {} for config {}"
+                            "".format
+                            (
+                                key,
+                                self.filename
+                            )
+                        )
+                    )
                 else:
                     if self._config_values[key] is None:
                         self._config_values[key] = self.default_keys[key]
-                        print(("[Config] Resetting invalid key type for %s in config %s." % (key, self.filename)))
+                        print(
+                            (
+                                "[Config] Resetting invalid key type for {} "
+                                "in config {}.".format
+                                (
+                                    key,
+                                    self.filename
+                                )
+                            )
+                        )
         self._save_config()
 
     def get_key(self, key):

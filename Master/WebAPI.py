@@ -14,9 +14,17 @@ import os
 upStart = calendar.timegm(datetime.datetime.utcnow().utctimetuple())
 peakPlayers = 0
 
-web_config = YAMLConfig("web.cfg.yaml",
-                        {"hostname": "example.com", "port": 8080, "servername": "PSO2Proxy Public Network",
-                         "rconpass": "changeme"}, True)
+web_config = YAMLConfig
+(
+    "web.cfg.yaml",
+    {
+        "hostname": "example.com",
+        "port": 8080,
+        "servername": "PSO2Proxy Public Network",
+        "rconpass": "changeme"
+    },
+    True
+)
 
 hostName = web_config['hostname']
 port = web_config['port']
@@ -30,9 +38,16 @@ class JSONConfig(Resource):
     @staticmethod
     def render_GET(request):
         request.setHeader("content-type", "application/json")
-        config_json = {'version': 1, "name": serverName,
-                       "publickeyurl": "http://%s:%i/publickey.blob" % (hostName, port),
-                       "host": hostName}
+        config_json = {
+            'version': 1,
+            "name": serverName,
+            "publickeyurl": "http://{}:{}/publickey.blob".format
+            (
+                hostName,
+                port
+            ),
+            "host": hostName
+        }
         return json.dumps(config_json)
 
 
@@ -58,7 +73,15 @@ class WebAPI(Resource):
         servers = []
         for server_ in list(ProxyServers.values()):
             playercount += server_.users
-            servers.append({'name': server_.name, 'players': server_.users, 'ip': server_.address, 'enabled': server_.enabled})
+            servers.append
+            (
+                {
+                    'name': server_.name,
+                    'players': server_.users,
+                    'ip': server_.address,
+                    'enabled': server_.enabled
+                }
+            )
 
         current_data = {'playerCount': playercount,
                         'upSince': upStart,
@@ -79,21 +102,60 @@ class WEBRcon(Resource):
         from Commands import Commands
 
         request.setHeader('content-type', "application/json")
-        if 'key' not in request.args or request.args['key'][0] != web_config['rconpass']:
-            return json.dumps({'success': False, 'reason': "Your RCON key is invalid!"})
+        if (
+            'key' not in request.args or
+            request.args['key'][0] != web_config['rconpass']
+        ):
+            return json.dumps
+            (
+                {
+                    'success': False,
+                    'reason': "Your RCON key is invalid!"
+                }
+            )
         else:
             if 'command' not in request.args:
-                return json.dumps({'success': False, 'reason': "Command not specified."})
+                return json.dumps
+                (
+                    {
+                        'success': False,
+                        'reason': "Command not specified."
+                    }
+                )
             else:
                 try:
                     if request.args['command'][0] in Commands:
-                        Commands[request.args['command'][0]](request.args['params'][0] if 'params' in request.args else None)
-                        return json.dumps({'success': True, 'output': "Command sent."})
+                        Commands
+                        [
+                            request.args['command'][0]
+                        ](
+                            request.args['params'][0]
+                            if 'params' in request.args else None
+                        )
+                        return json.dumps
+                        (
+                            {
+                                'success': True,
+                                'output': "Command sent."
+                            }
+                        )
                     else:
-                        return json.dumps({'success': False, 'reason': "Command not found."})
+                        return json.dumps
+                        (
+                            {
+                                'success': False,
+                                'reason': "Command not found."
+                            }
+                        )
                 except Exception:
                     e = traceback.format_exc()
-                    return json.dumps({'success': False, 'reason': "Error executing command\n%s" % e})
+                    return json.dumps
+                    (
+                        {
+                            'success': False,
+                            'reason': "Error executing command\n{}".format(e)
+                        }
+                    )
 
 
 def setup_web():

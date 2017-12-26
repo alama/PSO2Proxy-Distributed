@@ -17,7 +17,19 @@ def allexec(line):
     from ProxyServer import ProxyServers
 
     for server in list(ProxyServers.values()):
-        r.publish("proxy-server-%s" % server.name, json.dumps({'command': 'exec', 'input': line}))
+        r.publish
+        (
+            "proxy-server-{}".format(
+                server.name
+            ),
+            json.dumps
+            (
+                {
+                    'command': 'exec',
+                    'input': line
+                }
+            )
+        )
         print(("[PSO2PD] Sent command \"%s\" to %s" % (line, server.name)))
 
 
@@ -25,7 +37,14 @@ def allexec(line):
 def list(line):
     from ProxyServer import ProxyServers
     for server in list(ProxyServers.values()):
-        print(("[List] Server \"%s\" - Usercount %i - Enabled %s" % (server.name, server.users, server.enabled)))
+        print(
+            (
+                "[List] Server \"%s\" - Usercount %i - Enabled %s".format
+                (
+                    server.name, server.users, server.enabled
+                )
+            )
+        )
     print(("[List] %i proxy servers connected in total." % len(ProxyServers)))
 
 
