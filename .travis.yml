@@ -6,7 +6,7 @@ install: true
 addons:
   apt:
     packages:
-    - python-flake8
+    - python3-flake8
 
 virtualenv:
   system_site_packages: true
@@ -15,4 +15,4 @@ cache:
   - apt
 
 script:
-  - cd Master && ./checkstyle.sh
+  - ./checkstyle.sh Master
